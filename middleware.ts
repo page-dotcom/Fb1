@@ -1,21 +1,23 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(req: NextRequest) {
-  const ua = req.headers.get('user-agent') || '';
-  const linkOffer = "https://link-affiliate-kamu.com"; // Link Duit
+export function middleware(request: NextRequest) {
+  const ua = request.headers.get('user-agent') || '';
+  
+  // TETAP LINK OFFER KAMU
+  const linkOffer = "https://link-affiliate-atau-offer-kamu.com";
 
-  // Deteksi Bot Facebook
-  if (ua.includes('facebookexternalhit') || ua.includes('Facebot')) {
-    const res = NextResponse.rewrite(new URL('/api/raw-meta', req.url));
-    
-    // Kita injeksi header palsu di level server
-    res.headers.set('Content-Type', 'text/html; charset=utf-8');
-    res.headers.set('X-Frame-Options', 'ALLOW-FROM https://facebook.com');
-    return res;
+  const isFbBot = ua.includes('facebookexternalhit') || ua.includes('Facebot');
+
+  if (isFbBot) {
+    // Bot dilempar ke halaman pancingan untuk baca Meta Tag
+    return NextResponse.rewrite(new URL('/pancingan', request.url));
   }
 
+  // Manusia/User asli langsung ke Link Offer
   return NextResponse.redirect(linkOffer);
 }
 
-export const config = { matcher: '/' };
+export const config = {
+  matcher: '/',
+};
