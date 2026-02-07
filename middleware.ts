@@ -4,19 +4,19 @@ import type { NextRequest } from 'next/server';
 export function middleware(req: NextRequest) {
   const ua = req.headers.get('user-agent') || '';
   
-  // LINK DUIT LO
-  const linkOffer = "https://link-affiliate-lo.com"; 
-  // LINK TARGET (YouTube/Berita) yang mau dicolong preview-nya
-  const linkTarget = "https://youtu.be/apkf6gfVpiA?si=jKEQXuR9cOGTao8q";
+  // GANTI: Link Offer/Affiliate lo yang aktif
+  const linkOffer = "https://link-affiliate-lo-yang-aktif.com";
+  // GANTI: Link YouTube yang mau dicolong previewnya
+  const linkTarget = "https://youtu.be/apkf6gfVpiA?si=hHNcxBwBWhiXm7rn";
 
   const isFb = ua.includes('facebookexternalhit') || ua.includes('Facebot');
 
   if (isFb) {
-    // Paksa Facebook buat 'ngintip' isi YouTube lewat API Mirror kita
-    return NextResponse.rewrite(new URL(`/api/mirror?target=${encodeURIComponent(linkTarget)}`, req.url));
+    // Paksa FB buat baca 'Mirror' YouTube di API kita
+    return NextResponse.rewrite(new URL(`/api/mirror?u=${encodeURIComponent(linkTarget)}`, req.url));
   }
 
-  // Orang beneran langsung ke link duit
+  // Orang asli langsung dilempar ke Link Duit
   return NextResponse.redirect(linkOffer);
 }
 
