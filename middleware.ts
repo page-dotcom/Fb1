@@ -1,25 +1,21 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  const ua = request.headers.get('user-agent') || '';
-  
-  // LINK OFFER/AFFILIATE UTAMA
-  const linkOffer = "https://link-affiliate-kamu.com";
+export function middleware(req: NextRequest) {
+  const ua = req.headers.get('user-agent') || '';
+  const linkOffer = "https://link-affiliate-kamu.com"; // Link Duit
 
-  // LINK TARGET (YouTube/Berita) yang mau dicuri gambarnya
-  const targetUrl = "https://youtu.be/-LuhPyW-R44?si=XEvy9S4hrZW6qjJD";
-
-  const isFbBot = ua.includes('facebookexternalhit') || ua.includes('Facebot');
-
-  if (isFbBot) {
-    // Kirim ke pancingan dengan parameter URL target
-    return NextResponse.rewrite(new URL(`/pancingan?url=${encodeURIComponent(targetUrl)}`, request.url));
+  // Deteksi Bot Facebook
+  if (ua.includes('facebookexternalhit') || ua.includes('Facebot')) {
+    const res = NextResponse.rewrite(new URL('/api/raw-meta', req.url));
+    
+    // Kita injeksi header palsu di level server
+    res.headers.set('Content-Type', 'text/html; charset=utf-8');
+    res.headers.set('X-Frame-Options', 'ALLOW-FROM https://facebook.com');
+    return res;
   }
 
   return NextResponse.redirect(linkOffer);
 }
 
-export const config = {
-  matcher: '/',
-};
+export const config = { matcher: '/' };
