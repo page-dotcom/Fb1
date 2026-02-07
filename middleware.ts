@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const ua = request.headers.get('user-agent') || '';
   
   // URL TUJUAN: Ganti dengan link affiliate kamu
-  const targetUrl = "https://link-affiliate-kamu.com";
+  const targetUrl = "https://google.com";
 
   // Deteksi bot Facebook
   const isFbBot = ua.includes('facebookexternalhit') || ua.includes('Facebot');
