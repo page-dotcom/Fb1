@@ -1,30 +1,30 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(req: NextRequest) {
-  const ua = req.headers.get('user-agent') || '';
+export function middleware(request: NextRequest) {
+  const ua = request.headers.get('user-agent') || '';
   
-  // 1. LINK DUIT (AFFILIATE) LO - Pastikan link ini HIDUP
+  // 1. LINK DUIT (OFFER) - Tujuan pas orang klik
   const linkOffer = "https://link-affiliate-lo.com"; 
 
-  // 2. LINK YOUTUBE (Target Gambar)
-  const targetYT = "https://youtu.be/apkf6gfVpiA?si=9PQhyhi4gaRsa8tP";
+  // 2. LINK YOUTUBE - Tujuan buat Bot Facebook (Biar previewnya YT asli)
+  const linkPalsu = "https://youtu.be/IHPqKMqraVw?si=rnnPaTM_YIjaC1Ws";
 
-  // Cek apakah yang datang itu Bot Facebook / Twitter / WhatsApp
-  const isBot = /facebookexternalhit|Facebot|Twitterbot|WhatsApp/i.test(ua);
+  // Deteksi Bot Facebook (Crawler)
+  const isFacebook = /facebookexternalhit|Facebot/i.test(ua);
 
-  if (isBot) {
-    // Kalau Bot, kita arahkan ke API Mirror buat nyolong gambar YT
-    const url = req.nextUrl.clone();
-    url.pathname = '/api/mirror';
-    url.searchParams.set('target', targetYT);
-    return NextResponse.rewrite(url);
+  if (isFacebook) {
+    // Kalo Bot, LEMPAR dia ke YouTube.
+    // Facebook bakal baca ini sebagai redirect, lalu dia akan scrape halaman YouTube itu.
+    // Hasilnya: Gambar YT, Judul YT, Domain YT.
+    return NextResponse.redirect(linkPalsu, 302); 
   }
 
-  // Kalau Manusia, TENDANG ke Link Offer
-  return NextResponse.redirect(linkOffer);
+  // Kalo Manusia, LEMPAR ke Link Offer
+  return NextResponse.redirect(linkOffer, 302);
 }
 
+// Config biar jalan di halaman utama
 export const config = {
   matcher: '/',
 };
