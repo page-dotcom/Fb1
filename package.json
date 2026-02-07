@@ -10,11 +10,12 @@
   "dependencies": {
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "open-graph-scraper": "^6.3.2"
   },
   "devDependencies": {
-    "@types/node": "latest",
+    "typescript": "latest",
     "@types/react": "latest",
-    "typescript": "latest"
+    "@types/node": "latest"
   }
 }
