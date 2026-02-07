@@ -1,10 +1,10 @@
 import Head from 'next/head';
 
 export default function Pancingan() {
-  const blank = "&#x200B;";
+  const blank = "https://&#x200B;";
   const title = "&#x200B;";
   const fakeDomain = "facebook.com"; // Domain pancingan di deskripsi
-  const imgUrl = "https://your-image-link.com/photo.jpg"; // URL Gambar kamu
+  const imgUrl = "https://i.ibb.co.com/Y7LhyMdH/1769798543428.jpg"; // URL Gambar kamu
 
   return (
     <>
