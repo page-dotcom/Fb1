@@ -9,7 +9,7 @@ export default function Pancingan() {
   return (
     <>
       <Head>
-        <title>{blank}</title>
+        <title>{title}</title>
         <meta property="og:title" content={title} />
         <meta property="og:url" content={blank} />
         <meta property="og:description" content={fakeDomain} />
